@@ -36,9 +36,7 @@
 
     <!-- ЛЕВАЯ СТРАНИЦА -->
     <div class="page-left">
-        <div id="left-content" class="content">
-            <!-- Тут будет текст левой страницы -->
-        </div>
+        <div id="left-content" class="content"></div>
         <div class="nav-buttons">
             <button id="btn-prev" class="nav-btn" onclick="prevPage()">← Назад</button>
             <span></span>
@@ -47,9 +45,7 @@
 
     <!-- ПРАВАЯ СТРАНИЦА -->
     <div class="page-right">
-        <div id="right-content" class="content">
-            <!-- Тут будет текст правой страницы -->
-        </div>
+        <div id="right-content" class="content"></div>
         <div class="nav-buttons">
             <span></span>
             <button id="btn-next" class="nav-btn" onclick="nextPage()">Вперед →</button>
@@ -58,9 +54,28 @@
 </div>
 
 <script>
-    let currentPage = 0; // 0 — это Ориентир
+    // ==========================================
+    // ТЕКСТ ТВОЕЙ КНИГИ НАСТРАИВАЕТСЯ ТУТ:
+    // ==========================================
+    const bookData = {
+        1: {
+            left: "<h3>Страница 1</h3><p>Привет! Это начало первой страницы слева.</p>",
+            right: "<h3>Страница 1</h3><p>А это продолжение первой страницы на правой стороне.</p>"
+        },
+        2: {
+            left: "<h3>Страница 2</h3><p>Тут текст для второй страницы (левая часть).</p>",
+            right: "<h3>Страница 2</h3><p>Тут текст для второй страницы (правая часть).</p>"
+        },
+        3: {
+            left: "<h3>Страница 3</h3><p>Текст третьей страницы слева...</p>",
+            right: "<h3>Страница 3</h3><p>Текст третьей страницы справа...</p>"
+        },
+        // И так далее до 51... Ты можешь добавлять новые страницы прямо по этому шаблону!
+    };
+    // ==========================================
+
+    let currentPage = 0; 
     
-    // Генерация списка для Ориентира
     let orientirHtml = '<h3 style="margin-top:0;">Ориентир</h3><ul class="orientir-list">';
     for(let i = 1; i <= 51; i++) {
         orientirHtml += `<li onclick="goToPage(${i})">${i} стр — Перейти</li>`;
@@ -100,21 +115,26 @@
         const btnNext = document.getElementById('btn-next');
 
         if (currentPage === 0) {
-            // Ориентир: слева пусто, справа меню
             left.innerHTML = ''; 
             right.innerHTML = orientirHtml;
             btnPrev.innerText = "← На обложку";
-            btnNext.classList.add('hidden'); // прячем обычную кнопку вперед, ходить по меню
+            btnNext.classList.add('hidden'); 
         } else {
-            // Обычные страницы 1-51
             btnNext.classList.remove('hidden');
             btnPrev.innerText = "← Назад";
             
-            left.innerHTML = `<h3>Страница ${currentPage} (Левая часть)</h3><p>Тут твой текст для левой стороны страницы ${currentPage}. Просто сотри это и напиши своё.</p>`;
-            right.innerHTML = `<h3>Страница ${currentPage} (Правая часть)</h3><p>Тут твой текст для правой стороны страницы ${currentPage}. Просто сотри это и напиши своё.</p>`;
+            // Берем данные из нашего списка bookData, если они там есть
+            if (bookData[currentPage]) {
+                left.innerHTML = bookData[currentPage].left;
+                right.innerHTML = bookData[currentPage].right;
+            } else {
+                // Если страницу еще не заполнили, покажется стандартный текст
+                left.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для левой страницы.</p>`;
+                right.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для правой страницы.</p>`;
+            }
             
             if (currentPage === 51) {
-                btnNext.classList.add('hidden'); // Конец книги
+                btnNext.classList.add('hidden');
             }
         }
     }
