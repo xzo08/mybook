@@ -8,290 +8,126 @@
         body { 
             font-family: 'Georgia', serif; 
             background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px; 
-            box-sizing: border-box; 
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; overflow: hidden;
         }
-        
         .book { 
-            background: #fff; 
-            width: 100%; 
-            max-width: 950px; 
-            height: 600px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
-            border-radius: 6px; 
-            display: flex; 
-            position: relative; 
-            border: 6px solid #4a3321;
-            outline: 2px solid #dfcbb5;
-            outline-offset: -5px;
-            overflow: hidden;
+            background: #fff; width: 100%; max-width: 950px; height: 600px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border-radius: 6px; 
+            display: flex; position: relative; border: 6px solid #4a3321;
+            outline: 2px solid #dfcbb5; outline-offset: -5px; overflow: hidden;
         }
-        
         .page-left, .page-right { 
-            width: 50%; 
-            padding: 45px; 
-            box-sizing: border-box; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            position: relative; 
-            background: linear-gradient(to right, #fdfbf7 94%, #eadecc 100%); 
+            width: 50%; padding: 45px; box-sizing: border-box; 
+            display: flex; flex-direction: column; justify-content: space-between; 
+            position: relative; background: linear-gradient(to right, #fdfbf7 94%, #eadecc 100%); 
         }
-        .page-right {
-            background: linear-gradient(to left, #fdfbf7 94%, #eadecc 100%);
-        }
+        .page-right { background: linear-gradient(to left, #fdfbf7 94%, #eadecc 100%); }
         .page-left { border-right: 2px solid rgba(0,0,0,0.15); }
-        
-        /* Плавная анимация проявления контента при перелистывании */
         .content { 
-            flex-grow: 1; 
-            overflow-y: auto; 
-            font-size: 19px; 
-            line-height: 1.7; 
-            color: #222; 
+            flex-grow: 1; overflow-y: auto; font-size: 18px; line-height: 1.7; color: #222; 
             animation: pageFlipAnim 0.5s ease-in-out forwards;
         }
-        
         @keyframes pageFlipAnim {
             0% { opacity: 0; transform: translateX(5px); }
             100% { opacity: 1; transform: translateX(0); }
         }
-
-        .content h3 { color: #8b5a2b; font-size: 22px; border-bottom: 1px dashed #dfcbb5; padding-bottom: 8px; margin-top: 0; }
-        
-        /* Обложка с анимацией раскрытия */
+        .content h3 { color: #8b5a2b; font-size: 21px; border-bottom: 1px dashed #dfcbb5; padding-bottom: 8px; margin-top: 0; }
+        .content p { margin: 12px 0 0 0; text-indent: 20px; }
         .cover { 
-            width: 100%; 
-            height: 100%; 
-            background: linear-gradient(135deg, #3d2314 0%, #2b180d 100%);
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
-            color: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center; 
-            padding: 40px; 
-            box-sizing: border-box; 
-            position: absolute; 
-            z-index: 10; 
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center;
+            width: 100%; height: 100%; background: linear-gradient(135deg, #3d2314 0%, #2b180d 100%);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.6); color: #fff; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            text-align: center; padding: 40px; box-sizing: border-box; position: absolute; 
+            z-index: 10; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center;
         }
-        
-        /* Класс для красивого исчезновения обложки */
-        .cover.opened {
-            opacity: 0;
-            transform: scale(1.1);
-            pointer-events: none;
-        }
-
-        .decor-frame {
-            border: 2px solid #dfcbb5;
-            padding: 40px 30px;
-            border-radius: 4px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
-            max-width: 500px;
-        }
-        .cover h1 { 
-            font-size: 34px; 
-            margin: 0 0 15px 0; 
-            font-weight: normal; 
-            color: #f7e1c1;
-            text-shadow: 0px 2px 4px rgba(0,0,0,0.6);
-            letter-spacing: 1px;
-        }
-        .cover p { 
-            font-size: 18px; 
-            font-style: italic; 
-            color: #bfa385; 
-            margin: 0 0 35px 0; 
-        }
-        
+        .cover.opened { opacity: 0; transform: scale(1.1); pointer-events: none; }
+        .decor-frame { border: 2px solid #dfcbb5; padding: 40px 30px; border-radius: 4px; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); max-width: 500px; }
+        .cover h1 { font-size: 34px; margin: 0 0 15px 0; color: #f7e1c1; text-shadow: 0px 2px 4px rgba(0,0,0,0.6); }
+        .cover p { font-size: 18px; font-style: italic; color: #bfa385; margin: 0 0 35px 0; }
         .btn { 
-            background: linear-gradient(to bottom, #f7e1c1 0%, #dfcbb5 100%);
-            color: #3d2314; 
-            border: 1px solid #aa8d6f; 
-            padding: 14px 40px; 
-            font-size: 16px; 
-            cursor: pointer; 
-            border-radius: 4px; 
-            font-weight: bold; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: all 0.2s;
+            background: linear-gradient(to bottom, #f7e1c1 0%, #dfcbb5 100%); color: #3d2314; 
+            border: 1px solid #aa8d6f; padding: 14px 40px; font-size: 16px; cursor: pointer; 
+            border-radius: 4px; font-weight: bold; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
-        
+        .btn:hover { background: #fff; transform: translateY(-2px); }
         .nav-buttons { display: flex; justify-content: space-between; width: 100%; margin-top: 20px; }
-        .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; padding: 5px 10px; transition: transform 0.2s; }
-        .nav-btn:hover { color: #222; transform: scale(1.05); }
-        
-        /* Сетка Ориентира до 20 страниц */
-        .orientir-list { 
-            list-style: none; 
-            padding: 0; 
-            margin: 0; 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
-        }
-        .orientir-list li { 
-            cursor: pointer; 
-            color: #8b5a2b; 
-            font-size: 16px; 
-            transition: all 0.2s; 
-            padding: 6px 10px; 
-            border-radius: 4px; 
-            border: 1px solid transparent;
-        }
-        .orientir-list li:hover { 
-            color: #222; 
-            background: #f0eae1; 
-            border: 1px solid #dfcbb5;
-            transform: translateX(3px);
-        }
+        .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; }
+        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 6px; max-height: 420px; overflow-y: auto; }
+        .orientir-list li { cursor: pointer; color: #8b5a2b; font-size: 15px; padding: 6px 10px; border-radius: 4px; }
+        .orientir-list li:hover { color: #222; background: #f0eae1; border: 1px solid #dfcbb5; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
-
 <div class="book">
-    <!-- ОБЛОЖКА -->
-    <div id="cover" class="cover">
-        <div class="decor-frame">
-            <h1>«я не знаю как эта назвать атстань»</h1>
-            <p>Если я далеко — прочитай</p>
-            <button class="btn" onclick="openBook()">Открыть книгу</button>
-        </div>
-    </div>
-
-    <!-- ЛЕВАЯ СТРАНИЦА -->
-    <div class="page-left">
-        <div id="left-content" class="content"></div>
-        <div class="nav-buttons">
-            <button id="btn-prev" class="nav-btn" onclick="prevPage()">← Назад</button>
-            <span></span>
-        </div>
-    </div>
-
-    <!-- ПРАВАЯ СТРАНИЦА -->
-    <div class="page-right">
-        <div id="right-content" class="content"></div>
-        <div class="nav-buttons">
-            <span></span>
-            <button id="btn-next" class="nav-btn" onclick="nextPage()">Вперед →</button>
-        </div>
-    </div>
+    <div id="cover" class="cover"><div class="decor-frame"><h1>«я не знаю как эта назвать атстань»</h1><p>ненаю но я тебя люблю, и тут все расписано</p><button class="btn" onclick="openBook()">Открыть книгу</button></div></div>
+    <div class="page-left"><div id="left-content" class="content"></div><div class="nav-buttons"><button id="btn-prev" class="nav-btn" onclick="prevPage()">← Назад</button><span></span></div></div>
+    <div class="page-right"><div id="right-content" class="content"></div><div class="nav-buttons"><span></span><button id="btn-next" class="nav-btn" onclick="nextPage()">Вперед →</button></div></div>
 </div>
-
 <script>
-    // ==========================================
-    // ТЕКСТ ТВОЕЙ КНИГИ НАСТРАИВАЕТСЯ ТУТ (Всего 20 страниц):
-    // ==========================================
     const bookData = {
         1: {
-            left: "<h3>Страница 1</h3><p>Привет! Это начало первой страницы слева.</p>",
-            right: "<h3>Страница 1</h3><p>А это продолжение первой страницы на правой стороне.</p>"
+            left: "<h3>1 страница — из-за того что ты добра</h3><p>када мы с табой познокомились я сходу понял что ты девочка энергичная, и очень очень добрая и с наичистейшем сердцем. меня очень забавит то как ты мило обращаешься к животным, я по себе сам злой и БОЯЛСЯ трогать уличных животных типо вши вошки блошки хахаха.</p>",
+            right: "<h3>1 страница (продолжение)</h3><p>но момент када ты радовалась обычной собачке или кошечки меня както, хз добрее меня сделали чтоли. и теперь даже просто проходя мимо какойто милости пушистой мне хочеться их погладить или поболтать. НО если вместе с тобой и мы увидем собаку ты будешь идти сбоку, чтобы если вдруг она тобя не цапнула. Ну вот.</p>"
         },
         2: {
-            left: "<h3>Страница 2</h3><p>Тут текст для второй страницы (левая часть).</p>",
-            right: "<h3>Страница 2</h3><p>Тут текст для второй страницы (правая часть).</p>"
+            left: "<h3>2 страница — у тебя прекрасное чуство юмора</h3><p>ну с 1 дня нашего знакомста меня очень позабавил твой мемасик фоткой ДАЙ ПЯТЬ, и это меня в тебе заинтересовало сходу. Сейчас твой юмор прагресирует ххыхыхыхых, скажу так мне смешно со всех твоих шуток, и я часто делаю вид что мне типо не смешно, ожидав твою реакцию 'ой да иди ты' что забавит меня больше.</p>",
+            right: "<h3>2 страница (продолжение)</h3><p>Но самое главное, когда ты улыбаешься всегда улыбаюсь и я. Потому что я понимаю что тебе сейчас комфортно и ты показываешь ту часть себя которой ты хочешь быть.</p>"
         },
         3: {
-            left: "<h3>Страница 3</h3><p>Текст третьей страницы слева...</p>",
-            right: "<h3>Страница 3</h3><p>Текст третьей страницы справа...</p>"
+            left: "<h3>3 страница — в каждом есть загадка</h3><p>и ты не исключение, чтото мы все таки с тобой друг другу не договариваем, харашо если это секреты личного характера ими ты дельшся по своему желанию. Но если это касается не досказонасти в отношения то я очень тебя прошу говори все что ты чуствуешь или если тебя чтото тревожит.</p>",
+            right: "<h3>3 страница (продолжение)</h3><p>Я не телепат я не смогу нечего сделать если нечего не буду знать, ВОТ СЕЙЧАС 10.09.2026 0:55 ты атправила '🫶', и толком не общались сегодня, я в растерености возможно чтото не так...</p>"
+        },
+        4: {
+            left: "<h3>4 страница — мое поведение с тобой</h3><p>нууу тут говорить я не знаю что, просто я тебя считаю очень очень близким мне человеком которому я могу сказать что меня не беспокоит. ты скажешь 'А кОлЯн', колян знает меньше обо мне, чем ты. С ним мы обсуждаем доту, игры, планы на день(где это либо дота или какието другие игры).</p>",
+            right: "<h3>4 страница (продолжение)</h3><p>Мое поведение с коляном уже было хуевое в последние время с зимы, мы перестали общаться после начали и он очень поменялся. Если чтото я и сделаю от него прелетит 'ты клоун ебаный', и к чему я виду чтооооо, мое поведение при тебе это то поведение с которым я хожу по дому один или вместе с тобой, что мне нравиться. И не надо говорить грустный тд и тп, это в прошлом и на то были причины.</p>"
+        },
+        5: {
+            left: "<h3>5 страница — ты моя... я хз читай</h3><p>при встрече с тобой, мне всегда становится тепло и спокойно на душе, меня все бесит, сейчас меня много что тревожит шарага, проблемы с типами, будущее, армия работа хуета сука от этого страшно...</p>",
+            right: "<h3>5 страница (продолжение)</h3><p>а с тобой, это все забывается я просто вхожу в какойто кайф и мне просто типо ну кайф проводить с тобой время, обьятие снимают с меня тревогу. И все таки, обьятие для меня это самое лекарство от всего. да. лю тя.</p>"
+        },
+        6: {
+            left: "<h3>6 страница — как же я все таки тебя люблю</h3><p>Здесь начинается твоё продолжение про любовь...</p>",
+            right: "<h3>6 страница (продолжение)</h3><p>Тут можно дописать финальные слова этой страницы.</p>"
         }
-        // Ты можешь продолжить этот список до 20 страницы по аналогии!
     };
-    // ==========================================
 
-    let currentPage = 0; 
-    const totalPages = 20; // Ограничили книгу до 20 страниц
-    
+    let currentPage = 0; const totalPages = 20; 
+    const pageTitles = {
+        1: "1 стр — из-за того что ты добра", 2: "2 стр — прекрасное чуство юмора",
+        3: "3 стр — в каждом есть загадка", 4: "4 стр — мое поведение с тобой",
+        5: "5 стр — ты моя... я хз читай", 6: "6 стр — как же я все таки тебя люблю"
+    };
+
     let orientirHtml = '<h3>Ориентир</h3><ul class="orientir-list">';
     for(let i = 1; i <= totalPages; i++) {
-        orientirHtml += `<li onclick="goToPage(${i})">📖 ${i} страница</li>`;
+        let title = pageTitles[i] || `📖 ${i} страница`;
+        orientirHtml += `<li onclick="goToPage(${i})">${title}</li>`;
     }
     orientirHtml += '</ul>';
 
-    function openBook() {
-        document.getElementById('cover').classList.add('opened');
-        renderPage();
-    }
-
-    function goToPage(pageNum) {
-        currentPage = pageNum;
-        renderPage();
-        triggerPageAnimation();
-    }
-
-    function prevPage() {
-        if (currentPage > 0) {
-            currentPage--;
-            renderPage();
-            triggerPageAnimation();
-        } else {
-            document.getElementById('cover').classList.remove('opened');
-        }
-    }
-
-    function nextPage() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderPage();
-            triggerPageAnimation();
-        }
-    }
-
+    function openBook() { document.getElementById('cover').classList.add('opened'); renderPage(); }
+    function goToPage(pageNum) { currentPage = pageNum; renderPage(); triggerPageAnimation(); }
+    function prevPage() { if (currentPage > 0) { currentPage--; renderPage(); triggerPageAnimation(); } else { document.getElementById('cover').classList.remove('opened'); } }
+    function nextPage() { if (currentPage < totalPages) { currentPage++; renderPage(); triggerPageAnimation(); } }
     function triggerPageAnimation() {
-        // Перезапускаем анимацию проявления текста
-        const left = document.getElementById('left-content');
-        const right = document.getElementById('right-content');
-        left.style.animation = 'none';
-        right.style.animation = 'none';
-        left.offsetHeight; /* хак для сброса анимации */
-        right.offsetHeight;
-        left.style.animation = '';
-        right.style.animation = '';
+        const left = document.getElementById('left-content'); const right = document.getElementById('right-content');
+        left.style.animation = 'none'; right.style.animation = 'none'; left.offsetHeight; right.offsetHeight; left.style.animation = ''; right.style.animation = '';
     }
 
     function renderPage() {
-        const left = document.getElementById('left-content');
-        const right = document.getElementById('right-content');
-        const btnPrev = document.getElementById('btn-prev');
-        const btnNext = document.getElementById('btn-next');
-
+        const left = document.getElementById('left-content'); const right = document.getElementById('right-content');
+        const btnPrev = document.getElementById('btn-prev'); const btnNext = document.getElementById('btn-next');
         if (currentPage === 0) {
-            left.innerHTML = ''; 
-            right.innerHTML = orientirHtml;
-            btnPrev.innerText = "← На обложку";
-            btnNext.classList.add('hidden'); 
+            left.innerHTML = ''; right.innerHTML = orientirHtml; btnPrev.innerText = "← На обложку"; btnNext.classList.add('hidden'); 
         } else {
-            btnNext.classList.remove('hidden');
-            btnPrev.innerText = "← Назад";
-            
-            if (bookData[currentPage]) {
-                left.innerHTML = bookData[currentPage].left;
-                right.innerHTML = bookData[currentPage].right;
-            } else {
-                left.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для левой страницы.</p>`;
-                right.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для правой страницы.</p>`;
-            }
-            
-            if (currentPage === totalPages) {
-                btnNext.classList.add('hidden');
-            }
+            btnNext.classList.remove('hidden'); btnPrev.innerText = "← Назад";
+            if (bookData[currentPage]) { left.innerHTML = bookData[currentPage].left; right.innerHTML = bookData[currentPage].right; } 
+            else { left.innerHTML = `<h3>Страница ${currentPage}</h3><p>Текст левой страницы.</p>`; right.innerHTML = `<h3>Страница ${currentPage} (продолжение)</h3><p>Текст правой страницы.</p>`; }
+            if (currentPage === totalPages) { btnNext.classList.add('hidden'); }
         }
     }
 </script>
-
 </body>
 </html>
