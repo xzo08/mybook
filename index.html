@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя Книга</title>
+    <style>
+        body { font-family: 'Georgia', serif; background: #f4edd4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .book { background: #fff; width: 100%; max-width: 900px; height: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-radius: 4px; display: flex; position: relative; border: 5px solid #6b4c35; }
+        .page-left, .page-right { width: 50%; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; background: #fdfbf7; }
+        .page-left { border-right: 1px solid rgba(0,0,0,0.1); }
+        .content { flex-grow: 1; overflow-y: auto; font-size: 18px; line-height: 1.6; color: #2b2b2b; }
+        .cover { width: 100%; height: 100%; background: #6b4c35; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; box-sizing: border-box; position: absolute; z-index: 10; transition: transform 0.6s; }
+        .cover h1 { font-size: 32px; margin-bottom: 20px; font-weight: normal; }
+        .cover p { font-size: 20px; font-style: italic; color: #dfcbb5; margin-bottom: 40px; }
+        .btn { background: #dfcbb5; color: #333; border: none; padding: 12px 30px; font-size: 18px; cursor: pointer; border-radius: 4px; font-weight: bold; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #fff; }
+        .nav-buttons { display: flex; justify-content: space-between; width: 100%; margin-top: 20px; }
+        .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; padding: 5px 10px; }
+        .nav-btn:hover { text-decoration: underline; }
+        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .orientir-list li { cursor: pointer; color: #8b5a2b; text-decoration: underline; font-size: 16px; }
+        .orientir-list li:hover { color: #333; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="book">
+    <!-- ОБЛОЖКА -->
+    <div id="cover" class="cover">
+        <h1>📖</h1>
+        <p>Если я далеко — прочитай</p>
+        <button class="btn" onclick="openBook()">Открыть книгу</button>
+    </div>
+
+    <!-- ЛЕВАЯ СТРАНИЦА -->
+    <div class="page-left">
+        <div id="left-content" class="content">
+            <!-- Тут будет текст левой страницы -->
+        </div>
+        <div class="nav-buttons">
+            <button id="btn-prev" class="nav-btn" onclick="prevPage()">← Назад</button>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- ПРАВАЯ СТРАНИЦА -->
+    <div class="page-right">
+        <div id="right-content" class="content">
+            <!-- Тут будет текст правой страницы -->
+        </div>
+        <div class="nav-buttons">
+            <span></span>
+            <button id="btn-next" class="nav-btn" onclick="nextPage()">Вперед →</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPage = 0; // 0 — это Ориентир
+    
+    // Генерация списка для Ориентира
+    let orientirHtml = '<h3 style="margin-top:0;">Ориентир</h3><ul class="orientir-list">';
+    for(let i = 1; i <= 51; i++) {
+        orientirHtml += `<li onclick="goToPage(${i})">${i} стр — Перейти</li>`;
+    }
+    orientirHtml += '</ul>';
+
+    function openBook() {
+        document.getElementById('cover').classList.add('hidden');
+        renderPage();
+    }
+
+    function goToPage(pageNum) {
+        currentPage = pageNum;
+        renderPage();
+    }
+
+    function prevPage() {
+        if (currentPage > 0) {
+            currentPage--;
+            renderPage();
+        } else {
+            document.getElementById('cover').classList.remove('hidden');
+        }
+    }
+
+    function nextPage() {
+        if (currentPage < 51) {
+            currentPage++;
+            renderPage();
+        }
+    }
+
+    function renderPage() {
+        const left = document.getElementById('left-content');
+        const right = document.getElementById('right-content');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        if (currentPage === 0) {
+            // Ориентир: слева пусто, справа меню
+            left.innerHTML = ''; 
+            right.innerHTML = orientirHtml;
+            btnPrev.innerText = "← На обложку";
+            btnNext.classList.add('hidden'); // прячем обычную кнопку вперед, ходить по меню
+        } else {
+            // Обычные страницы 1-51
+            btnNext.classList.remove('hidden');
+            btnPrev.innerText = "← Назад";
+            
+            left.innerHTML = `<h3>Страница ${currentPage} (Левая часть)</h3><p>Тут твой текст для левой стороны страницы ${currentPage}. Просто сотри это и напиши своё.</p>`;
+            right.innerHTML = `<h3>Страница ${currentPage} (Правая часть)</h3><p>Тут твой текст для правой стороны страницы ${currentPage}. Просто сотри это и напиши своё.</p>`;
+            
+            if (currentPage === 51) {
+                btnNext.classList.add('hidden'); // Конец книги
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
