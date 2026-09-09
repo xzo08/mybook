@@ -5,22 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моя Книга</title>
     <style>
-        body { font-family: 'Georgia', serif; background: #f4edd4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
-        .book { background: #fff; width: 100%; max-width: 900px; height: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-radius: 4px; display: flex; position: relative; border: 5px solid #6b4c35; }
-        .page-left, .page-right { width: 50%; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; position: relative; background: #fdfbf7; }
-        .page-left { border-right: 1px solid rgba(0,0,0,0.1); }
-        .content { flex-grow: 1; overflow-y: auto; font-size: 18px; line-height: 1.6; color: #2b2b2b; }
-        .cover { width: 100%; height: 100%; background: #6b4c35; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; box-sizing: border-box; position: absolute; z-index: 10; transition: transform 0.6s; }
-        .cover h1 { font-size: 32px; margin-bottom: 20px; font-weight: normal; }
-        .cover p { font-size: 20px; font-style: italic; color: #dfcbb5; margin-bottom: 40px; }
-        .btn { background: #dfcbb5; color: #333; border: none; padding: 12px 30px; font-size: 18px; cursor: pointer; border-radius: 4px; font-weight: bold; text-decoration: none; display: inline-block; }
-        .btn:hover { background: #fff; }
+        /* Новый глубокий переливающийся черный фон */
+        body { 
+            font-family: 'Georgia', serif; 
+            background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px; 
+            box-sizing: border-box; 
+        }
+        
+        /* Книга со стильной кожаной текстурой и золотой рамкой */
+        .book { 
+            background: #fff; 
+            width: 100%; 
+            max-width: 950px; 
+            height: 600px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+            border-radius: 6px; 
+            display: flex; 
+            position: relative; 
+            border: 6px solid #4a3321;
+            outline: 2px solid #dfcbb5;
+            outline-offset: -5px;
+        }
+        
+        /* Страницы внутри раскрытой книги */
+        .page-left, .page-right { 
+            width: 50%; 
+            padding: 45px; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            position: relative; 
+            background: linear-gradient(to right, #fdfbf7 94%, #eadecc 100%); 
+        }
+        .page-right {
+            background: linear-gradient(to left, #fdfbf7 94%, #eadecc 100%);
+        }
+        .page-left { border-right: 2px solid rgba(0,0,0,0.15); }
+        
+        .content { flex-grow: 1; overflow-y: auto; font-size: 19px; line-height: 1.7; color: #222; }
+        .content h3 { color: #8b5a2b; font-size: 22px; border-bottom: 1px dashed #dfcbb5; padding-bottom: 8px; margin-top: 0; }
+        
+        /* Новая обложка с золотым тиснением и крутым стилем текста */
+        .cover { 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(135deg, #3d2314 0%, #2b180d 100%);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+            color: #fff; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 40px; 
+            box-sizing: border-box; 
+            position: absolute; 
+            z-index: 10; 
+            transition: transform 0.6s; 
+        }
+        .cover .decor-frame {
+            border: 2px solid #dfcbb5;
+            padding: 40px 30px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+            max-width: 500px;
+        }
+        .cover h1 { 
+            font-size: 34px; 
+            margin: 0 0 15px 0; 
+            font-weight: normal; 
+            color: #f7e1c1;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+        }
+        .cover p { 
+            font-size: 18px; 
+            font-style: italic; 
+            color: #bfa385; 
+            margin: 0 0 35px 0; 
+        }
+        
+        /* Красивые кнопки */
+        .btn { 
+            background: linear-gradient(to bottom, #f7e1c1 0%, #dfcbb5 100%);
+            color: #3d2314; 
+            border: 1px solid #aa8d6f; 
+            padding: 14px 40px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
+        
         .nav-buttons { display: flex; justify-content: space-between; width: 100%; margin-top: 20px; }
         .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; padding: 5px 10px; }
-        .nav-btn:hover { text-decoration: underline; }
-        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .orientir-list li { cursor: pointer; color: #8b5a2b; text-decoration: underline; font-size: 16px; }
-        .orientir-list li:hover { color: #333; }
+        .nav-btn:hover { color: #222; text-decoration: underline; }
+        
+        /* Список Ориентира */
+        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .orientir-list li { cursor: pointer; color: #8b5a2b; font-size: 16px; transition: color 0.2s; padding: 4px 8px; border-radius: 4px; }
+        .orientir-list li:hover { color: #222; background: #f0eae1; text-decoration: underline; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -29,9 +125,11 @@
 <div class="book">
     <!-- ОБЛОЖКА -->
     <div id="cover" class="cover">
-        <h1>📖</h1>
-        <p>Если я далеко — прочитай</p>
-        <button class="btn" onclick="openBook()">Открыть книгу</button>
+        <div class="decor-frame">
+            <h1>«я не знаю как эта назвать атстань»</h1>
+            <p>Если я далеко — прочитай</p>
+            <button class="btn" onclick="openBook()">Открыть книгу</button>
+        </div>
     </div>
 
     <!-- ЛЕВАЯ СТРАНИЦА -->
@@ -69,16 +167,15 @@
         3: {
             left: "<h3>Страница 3</h3><p>Текст третьей страницы слева...</p>",
             right: "<h3>Страница 3</h3><p>Текст третьей страницы справа...</p>"
-        },
-        // И так далее до 51... Ты можешь добавлять новые страницы прямо по этому шаблону!
+        }
     };
     // ==========================================
 
     let currentPage = 0; 
     
-    let orientirHtml = '<h3 style="margin-top:0;">Ориентир</h3><ul class="orientir-list">';
+    let orientirHtml = '<h3>Ориентир</h3><ul class="orientir-list">';
     for(let i = 1; i <= 51; i++) {
-        orientirHtml += `<li onclick="goToPage(${i})">${i} стр — Перейти</li>`;
+        orientirHtml += `<li onclick="goToPage(${i})">📖 ${i} страница</li>`;
     }
     orientirHtml += '</ul>';
 
@@ -123,12 +220,10 @@
             btnNext.classList.remove('hidden');
             btnPrev.innerText = "← Назад";
             
-            // Берем данные из нашего списка bookData, если они там есть
             if (bookData[currentPage]) {
                 left.innerHTML = bookData[currentPage].left;
                 right.innerHTML = bookData[currentPage].right;
             } else {
-                // Если страницу еще не заполнили, покажется стандартный текст
                 left.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для левой страницы.</p>`;
                 right.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для правой страницы.</p>`;
             }
