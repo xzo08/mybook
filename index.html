@@ -28,13 +28,10 @@
             flex-grow: 1; overflow-y: auto; font-size: 18px; line-height: 1.7; color: #222; 
             animation: pageFlipAnim 0.5s ease-in-out forwards;
         }
-        @keyframes pageFlipAnim {
-            0% { opacity: 0; transform: translateX(5px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes pageFlipAnim { 0% { opacity: 0; transform: translateX(5px); } 100% { opacity: 1; transform: translateX(0); } }
         .content h3 { color: #8b5a2b; font-size: 21px; border-bottom: 1px dashed #dfcbb5; padding-bottom: 8px; margin-top: 0; }
         .content p { margin: 12px 0 0 0; text-indent: 20px; }
-        .cover { 
+        .cover, .back-cover { 
             width: 100%; height: 100%; background: linear-gradient(135deg, #3d2314 0%, #2b180d 100%);
             box-shadow: inset 0 0 40px rgba(0,0,0,0.6); color: #fff; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
@@ -42,9 +39,11 @@
             z-index: 10; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center;
         }
         .cover.opened { opacity: 0; transform: scale(1.1); pointer-events: none; }
+        .back-cover { transform: scale(0.9); opacity: 0; pointer-events: none; z-index: 1; }
+        .back-cover.visible { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 11; }
         .decor-frame { border: 2px solid #dfcbb5; padding: 40px 30px; border-radius: 4px; box-shadow: inset 0 0 15px rgba(0,0,0,0.4); max-width: 500px; }
-        .cover h1 { font-size: 34px; margin: 0 0 15px 0; color: #f7e1c1; text-shadow: 0px 2px 4px rgba(0,0,0,0.6); }
-        .cover p { font-size: 18px; font-style: italic; color: #bfa385; margin: 0 0 35px 0; }
+        .cover h1, .back-cover h1 { font-size: 34px; margin: 0 0 15px 0; color: #f7e1c1; text-shadow: 0px 2px 4px rgba(0,0,0,0.6); }
+        .cover p, .back-cover p { font-size: 18px; font-style: italic; color: #bfa385; margin: 0 0 35px 0; }
         .btn { 
             background: linear-gradient(to bottom, #f7e1c1 0%, #dfcbb5 100%); color: #3d2314; 
             border: 1px solid #aa8d6f; padding: 14px 40px; font-size: 16px; cursor: pointer; 
@@ -53,22 +52,23 @@
         .btn:hover { background: #fff; transform: translateY(-2px); }
         .nav-buttons { display: flex; justify-content: space-between; width: 100%; margin-top: 20px; }
         .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; }
-        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 6px; max-height: 420px; overflow-y: auto; }
-        .orientir-list li { cursor: pointer; color: #8b5a2b; font-size: 15px; padding: 6px 10px; border-radius: 4px; }
-        .orientir-list li:hover { color: #222; background: #f0eae1; border: 1px solid #dfcbb5; }
+        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 8px; }
+        .orientir-list li { cursor: pointer; color: #8b5a2b; font-size: 16px; padding: 6px 10px; border-radius: 4px; transition: all 0.2s; }
+        .orientir-list li:hover { color: #222; background: #f0eae1; border: 1px solid #dfcbb5; transform: translateX(3px); }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 <div class="book">
     <div id="cover" class="cover"><div class="decor-frame"><h1>«я не знаю как эта назвать атстань»</h1><p>ненаю но я тебя люблю, и тут все расписано</p><button class="btn" onclick="openBook()">Открыть книгу</button></div></div>
+    <div id="back-cover" class="back-cover"><div class="decor-frame"><h1>Конец книги</h1><p>Здесь пока пусто... Скоро тут что-то появится ❤️</p><button class="btn" onclick="closeToOrientir()">В Ориентир</button></div></div>
     <div class="page-left"><div id="left-content" class="content"></div><div class="nav-buttons"><button id="btn-prev" class="nav-btn" onclick="prevPage()">← Назад</button><span></span></div></div>
     <div class="page-right"><div id="right-content" class="content"></div><div class="nav-buttons"><span></span><button id="btn-next" class="nav-btn" onclick="nextPage()">Вперед →</button></div></div>
 </div>
 <script>
     const bookData = {
         1: {
-            left: "<h3>1 страница — из-за того что ты добра</h3><p>када мы с табой познокомились я сходу понял что ты девочка энергичная, и очень очень добрая и с наичистейшем сердцем. меня очень забавит то как ты мило обращаешься к животным, я по себе сам злой и БОЯЛСЯ трогать уличных животных типо вши вошки блошки хахаха.</p>",
+            left: "<h3>1 страница — из-за того что ты добрая</h3><p>када мы с табой познокомились я сходу понял что ты девочка энергичная, и очень очень добрая и с наичистейшем сердцем. меня очень забавит то как ты мило обращаешься к животным, я по себе сам злой и БОЯЛСЯ трогать уличных животных типо вши вошки блошки хахаха.</p>",
             right: "<h3>1 страница (продолжение)</h3><p>но момент када ты радовалась обычной собачке или кошечки меня както, хз добрее меня сделали чтоли. и теперь даже просто проходя мимо какойто милости пушистой мне хочеться их погладить или поболтать. НО если вместе с тобой и мы увидем собаку ты будешь идти сбоку, чтобы если вдруг она тобя не цапнула. Ну вот.</p>"
         },
         2: {
@@ -88,44 +88,42 @@
             right: "<h3>5 страница (продолжение)</h3><p>а с тобой, это все забывается я просто вхожу в какойто кайф и мне просто типо ну кайф проводить с тобой время, обьятие снимают с меня тревогу. И все таки, обьятие для меня это самое лекарство от всего. да. лю тя.</p>"
         },
         6: {
-            left: "<h3>6 страница — как же я все таки тебя люблю</h3><p>Здесь начинается твоё продолжение про любовь...</p>",
-            right: "<h3>6 страница (продолжение)</h3><p>Тут можно дописать финальные слова этой страницы.</p>"
+            left: "<h3>6 страница — спасибо что ты появилась</h3><p>я не знаю как и почему до сих пор и я очень хочу всю жизнь провести с тобой, ты появилась у меня в тот момент, заранее прости пожалуйста когда #####(тут спецом блюр), в тот день я играл в кс и помню как ты мне это пишешь, я забил хуй на игру и я правда сидел с дрожащими руками я начал переживать за тебя, я не знаю я не хотел вообще заводить эту тему ПРОСТИ ПОЖАЛУЙСТА ЗА РАНЕЕ но я хочу сказать что я хотел поддержать пройти все вместе, потом авария...</p>",
+            right: "<h3>6 страница (продолжение)</h3><p>и виду к тому что ты мне помогала взаимностью справиться с моими проблемами, возможно если бы не ты я бы был уже мертв гдето, в чем я уверен на все 101%, спасибо тебе за то что ты у меня появилась, и помогала мне со всем справиться.<br><br>иииии на этом пока что все... книга времени от времени будет обновляться</p>"
         }
     };
 
-    let currentPage = 0; const totalPages = 20; 
+    let currentPage = 0; const totalPages = 6; 
     const pageTitles = {
-        1: "1 стр — из-за того что ты добра", 2: "2 стр — прекрасное чуство юмора",
+        1: "1 стр — из-за того что ты добрая", 2: "2 стр — прекрасное чуство юмора",
         3: "3 стр — в каждом есть загадка", 4: "4 стр — мое поведение с тобой",
-        5: "5 стр — ты моя... я хз читай", 6: "6 стр — как же я все таки тебя люблю"
+        5: "5 стр — ты моя... я хз читай", 6: "6 стр — спасибо что ты появилась"
     };
 
     let orientirHtml = '<h3>Ориентир</h3><ul class="orientir-list">';
-    for(let i = 1; i <= totalPages; i++) {
-        let title = pageTitles[i] || `📖 ${i} страница`;
-        orientirHtml += `<li onclick="goToPage(${i})">${title}</li>`;
-    }
+    for(let i = 1; i <= totalPages; i++) { orientirHtml += `<li onclick="goToPage(${i})">${pageTitles[i]}</li>`; }
     orientirHtml += '</ul>';
 
     function openBook() { document.getElementById('cover').classList.add('opened'); renderPage(); }
     function goToPage(pageNum) { currentPage = pageNum; renderPage(); triggerPageAnimation(); }
     function prevPage() { if (currentPage > 0) { currentPage--; renderPage(); triggerPageAnimation(); } else { document.getElementById('cover').classList.remove('opened'); } }
-    function nextPage() { if (currentPage < totalPages) { currentPage++; renderPage(); triggerPageAnimation(); } }
+    function nextPage() { if (currentPage < totalPages) { currentPage++; renderPage(); triggerPageAnimation(); } else { document.getElementById('back-cover').classList.add('visible'); } }
+    /* Хак сброса анимации */
     function triggerPageAnimation() {
         const left = document.getElementById('left-content'); const right = document.getElementById('right-content');
         left.style.animation = 'none'; right.style.animation = 'none'; left.offsetHeight; right.offsetHeight; left.style.animation = ''; right.style.animation = '';
     }
+    function closeToOrientir() { document.getElementById('back-cover').classList.remove('visible'); goToPage(0); }
 
     function renderPage() {
         const left = document.getElementById('left-content'); const right = document.getElementById('right-content');
         const btnPrev = document.getElementById('btn-prev'); const btnNext = document.getElementById('btn-next');
         if (currentPage === 0) {
-            left.innerHTML = ''; right.innerHTML = orientirHtml; btnPrev.innerText = "← На обложку"; btnNext.classList.add('hidden'); 
+            left.innerHTML = ''; right.innerHTML = orientirHtml; btnPrev.innerText = "← На обложку"; btnNext.classList.remove('hidden'); 
         } else {
             btnNext.classList.remove('hidden'); btnPrev.innerText = "← Назад";
-            if (bookData[currentPage]) { left.innerHTML = bookData[currentPage].left; right.innerHTML = bookData[currentPage].right; } 
-            else { left.innerHTML = `<h3>Страница ${currentPage}</h3><p>Текст левой страницы.</p>`; right.innerHTML = `<h3>Страница ${currentPage} (продолжение)</h3><p>Текст правой страницы.</p>`; }
-            if (currentPage === totalPages) { btnNext.classList.add('hidden'); }
+            if (bookData[currentPage]) { left.innerHTML = bookData[currentPage].left; right.innerHTML = bookData[currentPage].right; }
+            btnNext.innerText = (currentPage === totalPages) ? "Закрыть книгу →" : "Вперед →";
         }
     }
 </script>
