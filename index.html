@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моя Книга</title>
     <style>
-        /* Новый глубокий переливающийся черный фон */
         body { 
             font-family: 'Georgia', serif; 
             background: radial-gradient(circle, #1a1a1a 0%, #0d0d0d 100%); 
@@ -16,9 +15,9 @@
             margin: 0; 
             padding: 20px; 
             box-sizing: border-box; 
+            overflow: hidden;
         }
         
-        /* Книга со стильной кожаной текстурой и золотой рамкой */
         .book { 
             background: #fff; 
             width: 100%; 
@@ -31,9 +30,9 @@
             border: 6px solid #4a3321;
             outline: 2px solid #dfcbb5;
             outline-offset: -5px;
+            overflow: hidden;
         }
         
-        /* Страницы внутри раскрытой книги */
         .page-left, .page-right { 
             width: 50%; 
             padding: 45px; 
@@ -49,10 +48,24 @@
         }
         .page-left { border-right: 2px solid rgba(0,0,0,0.15); }
         
-        .content { flex-grow: 1; overflow-y: auto; font-size: 19px; line-height: 1.7; color: #222; }
+        /* Плавная анимация проявления контента при перелистывании */
+        .content { 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            font-size: 19px; 
+            line-height: 1.7; 
+            color: #222; 
+            animation: pageFlipAnim 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes pageFlipAnim {
+            0% { opacity: 0; transform: translateX(5px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
         .content h3 { color: #8b5a2b; font-size: 22px; border-bottom: 1px dashed #dfcbb5; padding-bottom: 8px; margin-top: 0; }
         
-        /* Новая обложка с золотым тиснением и крутым стилем текста */
+        /* Обложка с анимацией раскрытия */
         .cover { 
             width: 100%; 
             height: 100%; 
@@ -68,9 +81,18 @@
             box-sizing: border-box; 
             position: absolute; 
             z-index: 10; 
-            transition: transform 0.6s; 
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
         }
-        .cover .decor-frame {
+        
+        /* Класс для красивого исчезновения обложки */
+        .cover.opened {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .decor-frame {
             border: 2px solid #dfcbb5;
             padding: 40px 30px;
             border-radius: 4px;
@@ -92,7 +114,6 @@
             margin: 0 0 35px 0; 
         }
         
-        /* Красивые кнопки */
         .btn { 
             background: linear-gradient(to bottom, #f7e1c1 0%, #dfcbb5 100%);
             color: #3d2314; 
@@ -110,13 +131,33 @@
         .btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
         
         .nav-buttons { display: flex; justify-content: space-between; width: 100%; margin-top: 20px; }
-        .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; padding: 5px 10px; }
-        .nav-btn:hover { color: #222; text-decoration: underline; }
+        .nav-btn { background: none; border: none; font-size: 16px; color: #8b5a2b; cursor: pointer; font-weight: bold; padding: 5px 10px; transition: transform 0.2s; }
+        .nav-btn:hover { color: #222; transform: scale(1.05); }
         
-        /* Список Ориентира */
-        .orientir-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .orientir-list li { cursor: pointer; color: #8b5a2b; font-size: 16px; transition: color 0.2s; padding: 4px 8px; border-radius: 4px; }
-        .orientir-list li:hover { color: #222; background: #f0eae1; text-decoration: underline; }
+        /* Сетка Ориентира до 20 страниц */
+        .orientir-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+        }
+        .orientir-list li { 
+            cursor: pointer; 
+            color: #8b5a2b; 
+            font-size: 16px; 
+            transition: all 0.2s; 
+            padding: 6px 10px; 
+            border-radius: 4px; 
+            border: 1px solid transparent;
+        }
+        .orientir-list li:hover { 
+            color: #222; 
+            background: #f0eae1; 
+            border: 1px solid #dfcbb5;
+            transform: translateX(3px);
+        }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -153,7 +194,7 @@
 
 <script>
     // ==========================================
-    // ТЕКСТ ТВОЕЙ КНИГИ НАСТРАИВАЕТСЯ ТУТ:
+    // ТЕКСТ ТВОЕЙ КНИГИ НАСТРАИВАЕТСЯ ТУТ (Всего 20 страниц):
     // ==========================================
     const bookData = {
         1: {
@@ -168,41 +209,58 @@
             left: "<h3>Страница 3</h3><p>Текст третьей страницы слева...</p>",
             right: "<h3>Страница 3</h3><p>Текст третьей страницы справа...</p>"
         }
+        // Ты можешь продолжить этот список до 20 страницы по аналогии!
     };
     // ==========================================
 
     let currentPage = 0; 
+    const totalPages = 20; // Ограничили книгу до 20 страниц
     
     let orientirHtml = '<h3>Ориентир</h3><ul class="orientir-list">';
-    for(let i = 1; i <= 51; i++) {
+    for(let i = 1; i <= totalPages; i++) {
         orientirHtml += `<li onclick="goToPage(${i})">📖 ${i} страница</li>`;
     }
     orientirHtml += '</ul>';
 
     function openBook() {
-        document.getElementById('cover').classList.add('hidden');
+        document.getElementById('cover').classList.add('opened');
         renderPage();
     }
 
     function goToPage(pageNum) {
         currentPage = pageNum;
         renderPage();
+        triggerPageAnimation();
     }
 
     function prevPage() {
         if (currentPage > 0) {
             currentPage--;
             renderPage();
+            triggerPageAnimation();
         } else {
-            document.getElementById('cover').classList.remove('hidden');
+            document.getElementById('cover').classList.remove('opened');
         }
     }
 
     function nextPage() {
-        if (currentPage < 51) {
+        if (currentPage < totalPages) {
             currentPage++;
             renderPage();
+            triggerPageAnimation();
         }
+    }
+
+    function triggerPageAnimation() {
+        // Перезапускаем анимацию проявления текста
+        const left = document.getElementById('left-content');
+        const right = document.getElementById('right-content');
+        left.style.animation = 'none';
+        right.style.animation = 'none';
+        left.offsetHeight; /* хак для сброса анимации */
+        right.offsetHeight;
+        left.style.animation = '';
+        right.style.animation = '';
     }
 
     function renderPage() {
@@ -228,7 +286,7 @@
                 right.innerHTML = `<h3>Страница ${currentPage}</h3><p>Здесь будет твой текст для правой страницы.</p>`;
             }
             
-            if (currentPage === 51) {
+            if (currentPage === totalPages) {
                 btnNext.classList.add('hidden');
             }
         }
